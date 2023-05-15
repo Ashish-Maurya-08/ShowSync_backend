@@ -50,3 +50,8 @@ exports.loginUser = async (req,res)=>{
         res.send("Email not found");
     }
 }
+
+exports.getAllUsers = async (req,res)=>{
+    const allUsers=await user.find();
+    res.send("hell");
+}

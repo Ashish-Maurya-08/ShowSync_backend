@@ -11,6 +11,8 @@ router.get('/', (req, res) => {
   res.send('Authenticating user')
 })
 
+router.get('/all',authControl.getAllUsers)
+
 router.post('/register',authControl.registerUser)
 
 router.post('/login',authControl.loginUser)
