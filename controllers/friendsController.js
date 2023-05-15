@@ -1,18 +1,31 @@
 const FriendList = require('../models/friends')
 
 exports.addFriend = async (req, res) => {
-    const friend = new FriendList({
-        userId: req.body.userId,
-        friends: {
-            friendId: req.body.friendId,
-            friendsDate: Date.now()
-        }
-    })
-    try {
-        const newFriend = await friend.save()
-        res.status(201).json(newFriend)
-    } catch (err) {
-        res.status(400).json({ message: err.message })
+    const friendExists = await FriendList.findOne({ userId: req.body.userId })
+    if (friendExists) {
+        const friend = req.body.friendId
+        const date = Date.now()
+        try {
+            friendExists.friends.push({ friendId: friend, friendsDate: date })
+            const updatedFriend = await friendExists.save()
+            res.status(201).json(updatedFriend)
+        } catch (err) {
+            res.status(400).json({ message: err.message })
+        } 
+    }
+    else {
+        const friend = req.body.friendId
+        const date = Date.now()
+        const friendList = new FriendList({
+            userId: req.body.userId,
+            friends: [{ friendId: friend, friendsDate: date }]
+        })
+        try {
+            const newFriend = await friendList.save()
+            res.status(201).json(newFriend)
+        } catch (err) {
+            res.status(400).json({ message: err.message })
+        } 
     }
 }
 

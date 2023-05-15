@@ -4,6 +4,8 @@ const auth = require('./routes/auth');
 const list = require('./routes/list');
 const friends = require('./routes/friends');
 const mongoose=require('mongoose');
+const cors=require('cors');
+const jwtVerify=require('./jwtVerify');
 
 
 
@@ -15,12 +17,13 @@ const mongoURL=process.env.mongoURI
 
 // middleware
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({extended: true}));
 
 // routes
 app.use("/auth",auth)
 app.use("/list",list)
-app.use("/friends",friends)
+app.use("/friends",friends) 
 
 
 // database connection
@@ -29,7 +32,14 @@ mongoose.connect(mongoURL)
 .catch((err)=>console.log("Connection Failed"))
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+  const bearer=req.headers.authorization;
+  if(bearer){
+    const token=bearer.split(" ")[1];
+    if(jwtVerify(token)){
+      res.send("Hello User")
+    }
+  }
+  res.send("Not Authorized")
 }
 );
 
