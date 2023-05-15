@@ -28,6 +28,11 @@ mongoose.connect(mongoURL)
 .then(()=>console.log("Connection Successful"))
 .catch((err)=>console.log("Connection Failed"))
 
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+}
+);
+
 // error handling
 app.use((req, res, next) => {
     setImmediate(() => {
