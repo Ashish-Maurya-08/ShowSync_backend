@@ -52,6 +52,6 @@ exports.loginUser = async (req,res)=>{
 }
 
 exports.getAllUsers = async (req,res)=>{
-    const allUsers=await user.find();
+    // const allUsers=await user.find();
     res.send("hell");
 }
