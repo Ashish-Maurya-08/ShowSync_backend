@@ -16,6 +16,7 @@ const port=process.env.PORT
 const mongoURL=process.env.mongoURI
 
 // middleware
+ 
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({extended: true}));

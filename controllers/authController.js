@@ -16,12 +16,12 @@ exports.registerUser = async (req,res)=>{
     })
     const emailExists=await user.findOne({email:req.body.email});
     if(emailExists){
-        res.send("Email already exists");
+        res.status(400).json({message:"Email already exists"});
         return;
     }
     else{
         await newUser.save();
-        console.log("Saved successfully");
+        res.status(200).json({message:"User registered successfully"});
         res.send(newUser);
     }
 }
@@ -42,12 +42,12 @@ exports.loginUser = async (req,res)=>{
                 
             }
             else{
-                res.send("Incorrect Password");
+                res.status(400).json({message:"Password incorrect"});
             }
         });
     }
     else{
-        res.send("Email not found");
+        res.status(400).json({message:"Email not found"});
     }
 }
 
