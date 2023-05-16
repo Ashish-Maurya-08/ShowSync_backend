@@ -37,7 +37,12 @@ exports.loginUser = async (req,res)=>{
                     email:emailValid.email
                 }
                 const token=jwt.sign(payload,key,{expiresIn:3600});
-                res.send(token);
+                const data={
+                    token:token,
+                    name:emailValid.name,
+                    email:emailValid.email
+                }
+                res.send(data);
                 
             }
             else{
