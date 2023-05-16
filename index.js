@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 // error handling
 app.use((req, res, next) => {
     setImmediate(() => {
-      next(res.send("Something went wrong")); 
+      next(res.status(404).json({message:"Something went wrong"})); 
     });
   });
 
