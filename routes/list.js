@@ -15,7 +15,7 @@ router.use((req, res, next) => {
     res.status(401).json({message:"Not Authorized"})
 })
 
-router.get('/',listController.getLists);
+router.post('/',listController.getLists);
 router.post('/add',listController.addToList);
 router.post('/remove',listController.removeFromList);
 router.post('/update',listController.updateList);
