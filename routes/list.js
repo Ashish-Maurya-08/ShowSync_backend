@@ -12,7 +12,7 @@ router.use((req, res, next) => {
         return next()
       }
     }
-    res.send("Not Authorized")
+    res.status(401).json({message:"Not Authorized"})
 })
 
 router.get('/',listController.getLists);

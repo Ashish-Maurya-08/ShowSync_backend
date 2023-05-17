@@ -2,22 +2,23 @@ const myList = require('../models/myLists');
 
 exports.addToList = async (req, res) => {
     const type=req.body.type;
-    const list = await myList.findOne({ userId: req.body.userId })
+    let list = await myList.findOne({ userId: req.body.userId })
+    console.log(list);
     if (list) {
         list.lists[type].push(req.body.movieId)
-
     }
     else {
-        const list = new myList({
+        list = new myList({
             userId: req.body.userId,
             lists: {
                 planned: [],
                 watching: [],
                 completed: [],
                 favorites: []
-            }
+            } 
         })
         list.lists[type].push(req.body.movieId)
+        res.send(list);
     }
     try {
         const newList = await list.save()
@@ -86,6 +87,6 @@ exports.getLists = async (req, res) => {
         res.status(200).json(list)
     }
     else {
-        res.status(400).json({ message: "List not found" })
+        res.status(200).json({ message: "List not found" })
     }
 }
