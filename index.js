@@ -8,8 +8,6 @@ const cors=require('cors');
 const jwtVerify=require('./jwtVerify');
 
 
-
-
 // environment variables
 require("dotenv").config()
 const port=process.env.PORT

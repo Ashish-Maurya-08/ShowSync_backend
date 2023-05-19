@@ -19,5 +19,6 @@ router.post('/',listController.getLists);
 router.post('/add',listController.addToList);
 router.post('/remove',listController.removeFromList);
 router.post('/update',listController.updateList);
+router.post('/user',listController.getUser);
 
 module.exports=router;

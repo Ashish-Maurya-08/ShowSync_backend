@@ -90,3 +90,14 @@ exports.getLists = async (req, res) => {
         res.status(200).json({ message: "List not found" })
     }
 }
+
+exports.getUser = async (req, res) => {
+    const list = await myList.findOne({ userId: req.body.userId })
+    console.log(req.body);
+    if (list) {
+        res.status(200).json(list)
+    }
+    else {
+        res.status(200).json({ message: "User not found" })
+    }
+}
