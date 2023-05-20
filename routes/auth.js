@@ -13,4 +13,6 @@ router.post('/register',authControl.registerUser)
 
 router.post('/login',authControl.loginUser)
 
+router.post('/verify',authControl.verifyUser)
+
 module.exports = router

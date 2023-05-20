@@ -2,7 +2,7 @@ const user= require('../models/users')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-
+const verify = require('../jwtVerify');
 
 const key=process.env.secretOrKey;
 
@@ -59,4 +59,21 @@ exports.loginUser = async (req,res)=>{
 exports.getAllUsers = async (req,res)=>{
     const allUsers=await user.find();
     res.send(allUsers);
+}
+
+exports.verifyUser = async (req,res)=>{
+    const bearer=req.headers.authorization;
+    if(bearer){
+        const token=bearer.split(" ")[1];
+        if(verify(token)){
+            console.log("User verified");
+            res.status(200).json({message:"User verified"});
+        }
+        else{
+            res.status(400).json({message:"User not verified"});
+        }
+    }
+    else{
+        res.status(400).json({message:"User not verified"});
+    }
 }
