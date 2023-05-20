@@ -15,7 +15,7 @@ router.use((req, res, next) => {
     res.send("Not Authorized")
 })
 
-router.get('/',friendsController.getFriends);
+router.post('/',friendsController.getFriends);
 router.post('/add',friendsController.addFriend);
 router.post('/remove',friendsController.removeFriend);
 

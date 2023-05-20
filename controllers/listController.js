@@ -15,7 +15,7 @@ exports.addToList = async (req, res) => {
     console.log(payload);
     if (list) {
         const isDuplicate = list.lists[type].filter((item) => {
-            return (item.mediaId==mediaId);
+            return (item.mediaId==mediaId && item.mediaType==mtype);
         })
         if (isDuplicate.length) {
           res.status(400).json({message:'Media item already exists in the list'});
@@ -46,19 +46,29 @@ exports.addToList = async (req, res) => {
 
 
 exports.removeFromList = async (req, res) => {
+
     const type=req.body.type;
-    const list = await myList.findOne({ userId: req.body.userId })
+    const mtype=req.body.mtype;
+    const userId=req.body.userId;
+    const mediaId=req.body.movieId;
+
+    const list = await myList.findOne({ userId })
     if (list) {
-        const index=list.lists[type].indexOf(req.body.movieId);
+        const index=list.lists[type].findIndex((item) => {
+            return (item.mediaId==mediaId && item.mediaType==mtype);
+        })
+        console.log(index);
         if(index>-1){
             list.lists[type].splice(index,1);
         }
         else{
             res.status(400).json({ message: "Movie not found in list" })
+            return
         }
     }
-    else {
+    else{
         res.status(400).json({ message: "List not found" })
+        return
     }
     try {
         const newList = await list.save()
@@ -66,9 +76,7 @@ exports.removeFromList = async (req, res) => {
     }
     catch (err) {
         res.status(400).json({ message: err.message })
-    }  
-
-     
+    }
 }
 
 exports.updateList = async (req, res) => {
@@ -76,7 +84,9 @@ exports.updateList = async (req, res) => {
     const toType=req.body.toType;
     const list = await myList.findOne({ userId: req.body.userId })
     if (list) {
-        const index=list.lists[fromType].indexOf(req.body.movieId);
+        const index=list.lists[type].filter((item) => {
+            return (item.mediaId==mediaId && item.mediaType==mtype);
+        })
         if(index>-1){
             list.lists[fromType].splice(index,1);
             list.lists[toType].push(req.body.movieId)
@@ -98,7 +108,8 @@ exports.updateList = async (req, res) => {
 }
 
 exports.getLists = async (req, res) => {
-    const list = await myList.findOne({ userId: req.body.userId })
+    const userId = req.body.userId;
+    const list = await myList.findOne({ userId })
     if (list) {
         res.status(200).json(list)
     }
@@ -114,6 +125,6 @@ exports.getUser = async (req, res) => {
         res.status(200).json(list)
     }
     else {
-        res.status(200).json({ message: "User not found" })
+        res.status(404).json({ message: "UserList not found" })
     }
 }

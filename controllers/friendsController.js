@@ -43,12 +43,12 @@ exports.removeFriend = async (req, res) => {
 
 exports.getFriends = async (req, res) => {
     const userId = req.body.userId
-    try {
-        const friends = await FriendList.findOne({ userId: userId })
-        res.status(201).json(friends)
+    const friendList = await FriendList.findOne({ userId })
+    if (friendList) {
+        res.status(200).json(friendList)
     }
-    catch{
-        res.status(400).json({ message: err.message }) 
+    else {
+        res.status(200).json({ message: "Friend list not found" })
     }
     
 }
