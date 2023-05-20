@@ -2,14 +2,31 @@ const myList = require('../models/myLists');
 
 exports.addToList = async (req, res) => {
     const type=req.body.type;
-    let list = await myList.findOne({ userId: req.body.userId })
-    console.log(list);
+    const mtype=req.body.mtype;
+    const userId=req.body.userId;
+    const mediaId=req.body.movieId;
+    // console.log(req.body);
+    let list = await myList.findOne({ userId })
+    // console.log(list);
+    const payload={
+        mediaType:mtype,
+        mediaId:mediaId
+    }
+    console.log(payload);
     if (list) {
-        list.lists[type].push(req.body.movieId)
+        const isDuplicate = list.lists[type].filter((item) => {
+            return (item.mediaId==mediaId);
+        })
+        if (isDuplicate.length) {
+          res.status(400).json({message:'Media item already exists in the list'});
+          return
+        }
+        console.log(list.lists[type]);
+        list.lists[type].push(payload) 
     }
     else {
         list = new myList({
-            userId: req.body.userId,
+            userId: userId,
             lists: {
                 planned: [],
                 watching: [],
@@ -17,14 +34,13 @@ exports.addToList = async (req, res) => {
                 favorites: []
             } 
         })
-        list.lists[type].push(req.body.movieId)
-        res.send(list);
+        list.lists[type].push(payload)
     }
     try {
         const newList = await list.save()
         res.status(201).json(newList)
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        res.status(400).json({ message: "Something went wrong" })
     }
 }
 

@@ -4,10 +4,22 @@ const Schema = mongoose.Schema;
 const myListsSchema = new Schema({
     userId: String,
     lists: {
-        planned:Array,
-        watching:Array,
-        completed:Array,
-        favorites:Array
+        planned: [{
+            mediaId: String,
+            mediaType: String
+        }],
+        watching: [{
+            mediaId: String,
+            mediaType: String
+        }],
+        completed: [{
+            mediaId: String,
+            mediaType: String
+        }],
+        favorites: [{
+            mediaId: String,
+            mediaType: String
+        }]
     }
 });
 
