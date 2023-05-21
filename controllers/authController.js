@@ -61,6 +61,24 @@ exports.getAllUsers = async (req,res)=>{
     res.send(allUsers);
 }
 
+exports.getUser = async (req,res)=>{
+    const id=req.body.id;
+    let userInfo;
+    try{
+    userInfo=await user.findById(id);
+    console.log(userInfo);
+    }
+    catch(err){
+        console.log(err);
+    }
+    if(!userInfo){
+        res.status(400).json({message:"User not found"});
+        return;
+    }  
+    console.log(userInfo);
+    res.send(userInfo);
+}
+ 
 exports.verifyUser = async (req,res)=>{
     const bearer=req.headers.authorization;
     if(bearer){

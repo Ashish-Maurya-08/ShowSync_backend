@@ -80,23 +80,43 @@ exports.removeFromList = async (req, res) => {
 }
 
 exports.updateList = async (req, res) => {
-    const fromType=req.body.fromType;
-    const toType=req.body.toType;
-    const list = await myList.findOne({ userId: req.body.userId })
+    const fromType="planned";
+    const toType="completed";
+
+    const userId=req.body.userId;
+    const mtype=req.body.mtype;
+    const mediaId=req.body.movieId;
+    const list = await myList.findOne({ userId })
+
+    const payload={
+        mediaType:mtype,
+        mediaId:mediaId
+    }
+
     if (list) {
-        const index=list.lists[type].filter((item) => {
+        const index=list.lists[fromType].findIndex((item) => {
             return (item.mediaId==mediaId && item.mediaType==mtype);
         })
         if(index>-1){
+            const index2=list.lists[toType].findIndex((item) => {
+                return (item.mediaId==mediaId && item.mediaType==mtype);
+            })
+            if(index2>-1){
+                res.status(400).json({ message: "Movie already exists in list" })
+                return
+            }
             list.lists[fromType].splice(index,1);
-            list.lists[toType].push(req.body.movieId)
+            list.lists[toType].push(payload)
         }
         else{
             res.status(400).json({ message: "Movie not found in list" })
+            return
         }
+
     }
     else {
         res.status(400).json({ message: "List not found" })
+        return
     }
     try {
         const newList = await list.save()
@@ -120,7 +140,7 @@ exports.getLists = async (req, res) => {
 
 exports.getUser = async (req, res) => {
     const list = await myList.findOne({ userId: req.body.userId })
-    console.log(req.body);
+    console.log(req.body); 
     if (list) {
         res.status(200).json(list)
     }

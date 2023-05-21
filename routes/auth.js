@@ -9,6 +9,8 @@ router.get('/', (req, res) => {
 
 router.get('/all',authControl.getAllUsers)
 
+router.post('/user',authControl.getUser)
+
 router.post('/register',authControl.registerUser)
 
 router.post('/login',authControl.loginUser)
