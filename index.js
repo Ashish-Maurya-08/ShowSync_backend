@@ -2,6 +2,7 @@ const express=require('express');
 const app = express();
 const auth = require('./routes/auth');
 const list = require('./routes/list');
+const api = require('./routes/api');
 const friends = require('./routes/friends');
 const mongoose=require('mongoose');
 const cors=require('cors');
@@ -23,6 +24,7 @@ app.use(express.urlencoded({extended: true}));
 app.use("/auth",auth)
 app.use("/list",list)
 app.use("/friends",friends) 
+app.use("/api",api)
 
 
 // database connection
