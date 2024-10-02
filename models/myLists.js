@@ -6,19 +6,23 @@ const myListsSchema = new Schema({
     lists: {
         planned: [{
             mediaId: String,
-            mediaType: String
+            mediaType: String,
+            poster: String
         }],
         watching: [{
             mediaId: String,
-            mediaType: String
+            mediaType: String,
+            poster: String
         }],
         completed: [{
             mediaId: String,
-            mediaType: String
+            mediaType: String,
+            poster: String
         }],
         favorites: [{
             mediaId: String,
-            mediaType: String
+            mediaType: String,
+            poster: String
         }]
     }
 });
